@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="mule-cicd-poc-suite.xml" />
+	<munit:test name="mule-cicd-pocFlow-test" doc:id="ad92d9db-8412-4861-96f8-8bd51c61e941" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Request" doc:id="7b459cd3-85cf-4b49-aa5b-7b03a9c92e5e" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1fbe0f99-63a5-4f04-b7fd-9ab56cb78a9c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://mulecicdpocFlowtest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://mulecicdpocFlowtest\mock_attributes.dwl')]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="3acbd24d-e23f-41c8-8ed4-a9d22dafda8a" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://mulecicdpocFlowtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://mulecicdpocFlowtest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to mule-cicd-pocFlow" doc:id="7952f387-5d23-4469-bb1c-e1383e2fbef8" name="mule-cicd-pocFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="4225035b-724b-4944-8708-608a6b655a9e" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import mulecicdpocFlowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="mule-cicd-pocFlow-test1" doc:id="b829cb42-b028-4a51-8d07-e9722d44f641" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Request" doc:id="69f1e489-5981-4830-b752-11370db1bc98" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1fbe0f99-63a5-4f04-b7fd-9ab56cb78a9c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://mulecicdpocFlowtest1\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://mulecicdpocFlowtest1\mock_attributes.dwl')]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="e7ee51fd-0775-4520-aac4-7a20a973520e" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://mulecicdpocFlowtest1\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://mulecicdpocFlowtest1\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to mule-cicd-pocFlow" doc:id="73fedda5-9243-4a81-99ba-d30d2f07e50b" name="mule-cicd-pocFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="3bb7dc65-45d9-4833-8535-722f2d020784" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import mulecicdpocFlowtest1::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
