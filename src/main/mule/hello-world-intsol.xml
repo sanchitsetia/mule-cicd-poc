@@ -14,7 +14,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 output application/json
 ---
 {
-	hello: "integrations solutions class!!",
+	hello: "integrations solutions class!! woohoo",
 	test: p('test')
 }]]></ee:set-payload>
 			</ee:message>
